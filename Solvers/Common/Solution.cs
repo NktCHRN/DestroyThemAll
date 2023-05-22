@@ -2,7 +2,7 @@
 
 public sealed class Solution : ICloneable
 {
-    private Stack<MilitaryObject> _militaryObjects = new();
+    private LinkedList<MilitaryObject> _militaryObjects = new();
 
     public IEnumerable<MilitaryObject> MilitaryObjects => _militaryObjects;
     public int TotalMilitaryObjectsCount => _militaryObjects.Count;
@@ -12,14 +12,15 @@ public sealed class Solution : ICloneable
 
     public void AddMilitaryObject(MilitaryObject militaryObject)
     {
-        _militaryObjects.Push(militaryObject);
+        _militaryObjects.AddLast(militaryObject);
         TotalSoldiersCount += militaryObject.SoldiersCount;
         TotalTime += militaryObject.Time;
     }
 
     public void PopMilitaryObject()
     {
-        var militaryObject = _militaryObjects.Pop();
+        var militaryObject = _militaryObjects.Last!.Value;
+        _militaryObjects.RemoveLast();
         TotalSoldiersCount -= militaryObject.SoldiersCount;
         TotalTime -= militaryObject.Time;
     }
@@ -30,7 +31,7 @@ public sealed class Solution : ICloneable
         {
             TotalSoldiersCount = TotalSoldiersCount,
             TotalTime = TotalTime,
-            _militaryObjects = new Stack<MilitaryObject>(_militaryObjects)
+            _militaryObjects = new (_militaryObjects)
         };
         return solutionCopy;
     }
