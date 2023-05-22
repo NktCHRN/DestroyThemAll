@@ -4,7 +4,7 @@ public sealed class Solution : ICloneable
 {
     private LinkedList<MilitaryObject> _militaryObjects = new();
 
-    public IEnumerable<MilitaryObject> MilitaryObjects => _militaryObjects;
+    public IReadOnlyCollection<MilitaryObject> MilitaryObjects => _militaryObjects;
     public int TotalMilitaryObjectsCount => _militaryObjects.Count;
 
     public int TotalSoldiersCount { get; private set; }
