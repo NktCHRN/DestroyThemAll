@@ -10,7 +10,7 @@ var militaryObjects = new MilitaryObject[]
 const int maxSoldiersCount = 16;
 ISolver solver = new BruteforceSolver();        // change to your solver
 var solution = solver.Solve(militaryObjects, maxSoldiersCount);
-Console.WriteLine($"Total objects count: {solution.MilitaryObjects.Count()}; Total soldiers count: {solution.TotalSoldiersCount}; Total time: {solution.TotalTime} hours");
+Console.WriteLine($"Total objects count: {solution.MilitaryObjects.Count}; Total soldiers count: {solution.TotalSoldiersCount}; Total time: {solution.TotalTime} hours");
 Console.WriteLine("Objects:");
 foreach (var militaryObject in solution.MilitaryObjects)
 {
