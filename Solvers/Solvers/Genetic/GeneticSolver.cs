@@ -1,32 +1,60 @@
-﻿using System.Collections;
-using Solvers.Common;
-using System.Collections.Generic;
+﻿using Solvers.Common;
 
 namespace Solvers.Solvers.Genetic;
 
 public sealed class GeneticSolver : ISolver
 {
-
     private MilitaryObject[] _militaryObjects = null!;
     private int _maxSoldiersCount;
-    
+
+    private List<int[]> _population = null!;
+    private Solution _resultSolution = null!;
+
     public int GenerationsCount {get;set;}
     public int PopulationSize {get;set;}
     public double CrossoverRate { get; set; }
     public double MutationRate { get; set; }
 
-    private List<int[]> Population;
-    private Solution _resultSolution = null!;
-
     public Solution Solve(MilitaryObject[] militaryObjects, int maxSoldiersCount)
     {
-        
         _militaryObjects = militaryObjects;
         _maxSoldiersCount = maxSoldiersCount;
 
+        SetupDefaultProperties();
+
+        var population = CreatePopulation();
+        int[] bestIndividual = null!;
+
+        _resultSolution = new();
+        for (int i = 0; i < GenerationsCount; i++)
+        {
+            var filteredPopulation = FilterPopulation(population);
+            var (parent1, parent2) = ChooseParents(filteredPopulation);
+            var (child1, child2) = SinglePointCrossover(parent1, parent2);
+            child1 = Mutation(child1, MutationRate);
+            child2 = Mutation(child2, MutationRate);
+            filteredPopulation.Add(child1);
+            filteredPopulation.Add(child2);
+
+            bestIndividual = Fitness(filteredPopulation);
+        }
+        
+        for (int i = 0; i < militaryObjects.Length; i++)
+        {
+            if (bestIndividual[i] == 1)
+            {
+                _resultSolution.AddLastMilitaryObject(militaryObjects[i]);
+            }
+        }
+
+        return _resultSolution;
+    }
+
+    private void SetupDefaultProperties()
+    {
         if (GenerationsCount == 0)
         {
-            GenerationsCount = 50; 
+            GenerationsCount = 50;
         }
 
         if (PopulationSize == 0)
@@ -41,109 +69,68 @@ public sealed class GeneticSolver : ISolver
 
         if (MutationRate == 0)
         {
-            MutationRate = 0.1; 
+            MutationRate = 0.1;
         }
-        
-        List<int[]> population = CreatePopulation();
-        int[] BestIndividual = null;
-        double totalTime = 0; 
-
-        _resultSolution = new();
-        for (int i = 0; i < GenerationsCount; i++)
-        {
-            List<int[]> filteredPopulation = FilterPopulation(population);
-            (int[] parent1, int[] parent2) = ChooseParents(filteredPopulation);
-            (int[] child1, int[] child2) = SinglePointCrossover(parent1, parent2);
-            child1 = Mutation(child1, MutationRate);
-            child2 = Mutation(child2, MutationRate);
-            filteredPopulation.Add(child1);
-            filteredPopulation.Add(child2);
-
-            (BestIndividual, totalTime) = Fitness(filteredPopulation);
-            
-        }
-        
-        for (int i = 0; i < militaryObjects.Length; i++)
-        {
-            if (BestIndividual[i] == 1)
-            {
-                _resultSolution.AddLastMilitaryObject(militaryObjects[i]);
-            }
-        }
-
-        return _resultSolution;
-        
-        
     }
 
-    public List<int[]> CreatePopulation()
+    private List<int[]> CreatePopulation()
     {
-        Random random = new Random();
+        var random = new Random();
 
-        Population = new();
+        _population = new(PopulationSize);
         
         for (int i = 0; i < PopulationSize; i++)
         {
 
-            int[] chromosome = new int[_militaryObjects.Length];
+            var chromosome = new int[_militaryObjects.Length];
             for (int j = 0; j < _militaryObjects.Length; j++)
             {
                 chromosome[j] = random.Next(2); 
             }
 
-            Population.Add(chromosome);
+            _population.Add(chromosome);
         }
 
-        return Population;
+        return _population;
     }
 
-    public List<int[]> FilterPopulation(List<int[]> Population)
+    private List<int[]> FilterPopulation(List<int[]> population)
     {
-        List<int[]> FilteredPopulation = new List<int[]>();
+        var filteredPopulation = new List<int[]>();
 
-        int numObjects = _militaryObjects.Length; 
-        
-        foreach (int[] individual in Population)
+        foreach (int[] individual in population)
         {
-            int totalAmountOfPeople = Enumerable.Range(0, numObjects)
+            int totalAmountOfPeople = Enumerable.Range(0, _militaryObjects.Length)
                 .Sum(i => _militaryObjects[i].SoldiersCount * individual[i]);
 
-            if (totalAmountOfPeople <= 16 && totalAmountOfPeople != 0)
+            if (totalAmountOfPeople <= _maxSoldiersCount && totalAmountOfPeople != 0)
             {
-                FilteredPopulation.Add(individual);
+                filteredPopulation.Add(individual);
             }
         }
 
-        return FilteredPopulation;
+        return filteredPopulation;
     }
 
-    public int HelpFitness(int[] Chromosome)
-    {
-        int totalObjects = Chromosome.Sum();
+    private static int HelpFitness(int[] chromosome) => chromosome.Sum();
 
-        return totalObjects;
-    }
-
-    public double HelpFitnessTime(int[] Chromosome)
+    private double HelpFitnessTime(int[] chromosome)
     { 
-        int numObjects = _militaryObjects.Length; 
-        
-        double totalTime = Enumerable.Range(0, numObjects)
-            .Sum(i => _militaryObjects[i].Time * Chromosome[i]);
+        double totalTime = Enumerable.Range(0, _militaryObjects.Length)
+            .Sum(i => _militaryObjects[i].Time * chromosome[i]);
 
         return totalTime;
     }
 
-    public (int[], double) Fitness(List<int[]> population)
+    private int[] Fitness(List<int[]> population)
     {
-        float bestFitness = float.NegativeInfinity;
-        double bestTotalTime = double.NegativeInfinity;
-        int[] bestIndividual = null;
-        int numObjects = _militaryObjects.Length;
+        var bestFitness = double.NegativeInfinity;
+        var bestTotalTime = double.NegativeInfinity;
+        int[] bestIndividual = null!;
         
         foreach (var individual in population)
         {
-            float fitness = HelpFitness(individual);
+            var fitness = HelpFitness(individual);
 
             if (fitness > bestFitness)
             {
@@ -153,7 +140,7 @@ public sealed class GeneticSolver : ISolver
             }
             else if (fitness == bestFitness)
             {
-                double totalTime = HelpFitnessTime(individual);
+                var totalTime = HelpFitnessTime(individual);
 
                 if (totalTime < bestTotalTime)
                 {
@@ -164,29 +151,26 @@ public sealed class GeneticSolver : ISolver
             }
         }
 
-        return (bestIndividual, bestTotalTime);
+        return bestIndividual;
     }
-    
-    public (int[], int[]) ChooseParents(List<int[]> population)
-    {
-        Random random = new Random();
-        float bestFitness = 0;
-        double totalTime = 0;
-        int[] parent2 = new int[] { };
-        int[] parent1 = population[random.Next(population.Count)];
 
-        (parent2, totalTime) = Fitness(population);
+    private (int[], int[]) ChooseParents(List<int[]> population)
+    {
+        var random = new Random();
+        var parent1 = population[random.Next(population.Count)];
+
+        var parent2 = Fitness(population);
 
         return (parent1, parent2);
     }
-    
-    public (int[], int[]) SinglePointCrossover(int[] parent1, int[] parent2)
-    {
-        Random random = new Random();
-        int s = random.Next(1, parent1.Length - 1);
 
-        int[] child1 = new int[parent1.Length];
-        int[] child2 = new int[parent2.Length];
+    private static (int[], int[]) SinglePointCrossover(int[] parent1, int[] parent2)
+    {
+        var random = new Random();
+        var s = random.Next(1, parent1.Length - 1);
+
+        var child1 = new int[parent1.Length];
+        var child2 = new int[parent2.Length];
 
         Array.Copy(parent1, child1, s);
         Array.Copy(parent2, s, child1, s, parent1.Length - s);
@@ -196,11 +180,11 @@ public sealed class GeneticSolver : ISolver
 
         return (child1, child2);
     }
-    
-    public int[] Mutation(int[] chromosome, double mutationRate)
+
+    private static int[] Mutation(int[] chromosome, double mutationRate)
     {
-        Random random = new Random();
-        int[] mutatedChromosome = (int[])chromosome.Clone();
+        var random = new Random();
+        var mutatedChromosome = (int[])chromosome.Clone();
 
         for (int i = 0; i < chromosome.Length; i++)
         {
