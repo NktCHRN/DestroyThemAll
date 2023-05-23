@@ -38,20 +38,15 @@ public sealed class DynamicSolver : ISolver
                 }
             }
         }
-        var temp = new List<MilitaryObject>();
+        var x = new Solution();
         k = maxSoldiersCount;
         for (var j = militaryObjects.Length; j >= 1; j--)
         {
             if (t[j, k][1] != t[j - 1, k][1])
             {
-                temp.Insert(0, militaryObjects[j - 1]);
+                x.AddFirstMilitaryObject(militaryObjects[j - 1]);
                 k -= militaryObjects[j - 1].SoldiersCount;
             }
-        }
-        var x = new Solution();
-        foreach (var militaryObject in temp)
-        {
-            x.AddMilitaryObject(militaryObject);
         }
         return x;
     }
