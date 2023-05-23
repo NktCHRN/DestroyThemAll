@@ -1,4 +1,5 @@
-﻿using Plotly.NET.CSharp;
+﻿using Common;
+using Plotly.NET.CSharp;
 using Solvers.Common;
 using Solvers.Solvers.Bruteforce;
 using Solvers.Solvers.Dynamic;
@@ -9,7 +10,8 @@ var militaryObjects = new MilitaryObject[]
     { new("O1", 3, 5), new("O2", 4, 7), new("O3", 6, 6), new("O4", 7, 12), new("O5", 2, 10) };
 const int maxSoldiersCount = 16;
 ISolver solver = new GeneticSolver();        // change to your solver
-var solution = solver.Solve(militaryObjects, maxSoldiersCount);
+var solution = solver.Solve(new Problem(militaryObjects, maxSoldiersCount));
+var sl = (SolutionModel)solution;
 Console.WriteLine($"Total objects count: {solution.MilitaryObjects.Count}; Total soldiers count: {solution.TotalSoldiersCount}; Total time: {solution.TotalTime} hours");
 Console.WriteLine("Objects:");
 foreach (var militaryObject in solution.MilitaryObjects)

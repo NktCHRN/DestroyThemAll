@@ -1,17 +1,17 @@
-﻿using Solvers.Common;
+﻿using Common;
+using Solvers.Common;
 
 namespace Solvers.Solvers.Greedy;
 
 public sealed class GreedySolver : ISolver
 {
-    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
+    public Solution Solve(Problem problem)
     {
         var x = new Solution();
-        var sortedObjects = 
-            militaryObjects.OrderBy(obj => obj.SoldiersCount / obj.Time);
+        var sortedObjects = problem.MilitaryObjects.OrderBy(obj => obj.SoldiersCount / obj.Time);
         foreach (var obj in sortedObjects)
         {
-            if (maxSoldiersCount-x.TotalSoldiersCount >= obj.SoldiersCount)
+            if (problem.MaxSoldiersCount - x.TotalSoldiersCount >= obj.SoldiersCount)
             {
                 x.AddLastMilitaryObject(obj);
             }
