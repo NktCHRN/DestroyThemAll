@@ -8,7 +8,7 @@ using Solvers.Solvers.Greedy;
 var militaryObjects = new MilitaryObject[]
     { new("O1", 3, 5), new("O2", 4, 7), new("O3", 6, 6), new("O4", 7, 12), new("O5", 2, 10) };
 const int maxSoldiersCount = 16;
-ISolver solver = new BruteforceSolver();        // change to your solver
+ISolver solver = new GeneticSolver();        // change to your solver
 var solution = solver.Solve(militaryObjects, maxSoldiersCount);
 Console.WriteLine($"Total objects count: {solution.MilitaryObjects.Count}; Total soldiers count: {solution.TotalSoldiersCount}; Total time: {solution.TotalTime} hours");
 Console.WriteLine("Objects:");
