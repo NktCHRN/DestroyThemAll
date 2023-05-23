@@ -10,14 +10,21 @@ public sealed class Solution : ICloneable
     public int TotalSoldiersCount { get; private set; }
     public double TotalTime { get; private set; }
 
-    public void AddMilitaryObject(MilitaryObject militaryObject)
+    public void AddFirstMilitaryObject(MilitaryObject militaryObject)
+    {
+        _militaryObjects.AddFirst(militaryObject);
+        TotalSoldiersCount += militaryObject.SoldiersCount;
+        TotalTime += militaryObject.Time;
+    }
+
+    public void AddLastMilitaryObject(MilitaryObject militaryObject)
     {
         _militaryObjects.AddLast(militaryObject);
         TotalSoldiersCount += militaryObject.SoldiersCount;
         TotalTime += militaryObject.Time;
     }
 
-    public void PopMilitaryObject()
+    public void RemoveLastMilitaryObject()
     {
         var militaryObject = _militaryObjects.Last!.Value;
         _militaryObjects.RemoveLast();
