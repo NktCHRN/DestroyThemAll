@@ -28,7 +28,7 @@ public sealed class BruteforceSolver : ISolver
                 var currentObject = _militaryObjects[j];
                 if (currentObject.SoldiersCount + _currentSolution.TotalSoldiersCount <= _maxSoldiersCount)
                 {
-                    _currentSolution.AddMilitaryObject(currentObject);
+                    _currentSolution.AddLastMilitaryObject(currentObject);
                     if (_currentSolution.TotalMilitaryObjectsCount > _resultSolution.TotalMilitaryObjectsCount
                             || (_currentSolution.TotalMilitaryObjectsCount == _resultSolution.TotalMilitaryObjectsCount
                                 && _currentSolution.TotalTime < _resultSolution.TotalTime))
@@ -38,7 +38,7 @@ public sealed class BruteforceSolver : ISolver
 
                     SolveInternal(j + 1);
 
-                    _currentSolution.PopMilitaryObject();
+                    _currentSolution.RemoveLastMilitaryObject();
                 }
             }
         }
