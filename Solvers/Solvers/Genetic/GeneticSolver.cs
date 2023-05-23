@@ -4,7 +4,7 @@ namespace Solvers.Solvers.Genetic;
 
 public sealed class GeneticSolver : ISolver
 {
-    private MilitaryObject[] _militaryObjects = null!;
+    private IReadOnlyList<MilitaryObject> _militaryObjects = null!;
     private int _maxSoldiersCount;
 
     private List<int[]> _population = null!;
@@ -15,7 +15,7 @@ public sealed class GeneticSolver : ISolver
     public double CrossoverRate { get; set; }
     public double MutationRate { get; set; }
 
-    public Solution Solve(MilitaryObject[] militaryObjects, int maxSoldiersCount)
+    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
     {
         _militaryObjects = militaryObjects;
         _maxSoldiersCount = maxSoldiersCount;
@@ -39,7 +39,7 @@ public sealed class GeneticSolver : ISolver
             bestIndividual = Fitness(filteredPopulation);
         }
         
-        for (int i = 0; i < militaryObjects.Length; i++)
+        for (int i = 0; i < militaryObjects.Count; i++)
         {
             if (bestIndividual[i] == 1)
             {
@@ -82,8 +82,8 @@ public sealed class GeneticSolver : ISolver
         for (int i = 0; i < PopulationSize; i++)
         {
 
-            var chromosome = new int[_militaryObjects.Length];
-            for (int j = 0; j < _militaryObjects.Length; j++)
+            var chromosome = new int[_militaryObjects.Count];
+            for (int j = 0; j < _militaryObjects.Count; j++)
             {
                 chromosome[j] = random.Next(2); 
             }
@@ -100,7 +100,7 @@ public sealed class GeneticSolver : ISolver
 
         foreach (int[] individual in population)
         {
-            int totalAmountOfPeople = Enumerable.Range(0, _militaryObjects.Length)
+            int totalAmountOfPeople = Enumerable.Range(0, _militaryObjects.Count)
                 .Sum(i => _militaryObjects[i].SoldiersCount * individual[i]);
 
             if (totalAmountOfPeople <= _maxSoldiersCount && totalAmountOfPeople != 0)
@@ -116,7 +116,7 @@ public sealed class GeneticSolver : ISolver
 
     private double HelpFitnessTime(int[] chromosome)
     { 
-        double totalTime = Enumerable.Range(0, _militaryObjects.Length)
+        double totalTime = Enumerable.Range(0, _militaryObjects.Count)
             .Sum(i => _militaryObjects[i].Time * chromosome[i]);
 
         return totalTime;

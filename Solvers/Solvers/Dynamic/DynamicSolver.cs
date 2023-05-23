@@ -4,15 +4,15 @@ namespace Solvers.Solvers.Dynamic;
 
 public sealed class DynamicSolver : ISolver
 {
-    public Solution Solve(MilitaryObject[] militaryObjects, int maxSoldiersCount)
+    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
     {
-        var t = new double[militaryObjects.Length + 1, maxSoldiersCount + 1][];
+        var t = new double[militaryObjects.Count + 1, maxSoldiersCount + 1][];
         int k;
         for (k = 0; k <= maxSoldiersCount; k++)
         {
             t[0, k] = new[] { 0.0, 0.0 };
         }
-        for (var j = 1; j <= militaryObjects.Length; j++)
+        for (var j = 1; j <= militaryObjects.Count; j++)
         {
             for (k = 0; k <= maxSoldiersCount; k++)
             {
@@ -40,7 +40,7 @@ public sealed class DynamicSolver : ISolver
         }
         var x = new Solution();
         k = maxSoldiersCount;
-        for (var j = militaryObjects.Length; j >= 1; j--)
+        for (var j = militaryObjects.Count; j >= 1; j--)
         {
             if (t[j, k][1] != t[j - 1, k][1])
             {

@@ -2,5 +2,5 @@
 
 public interface ISolver
 {
-    Solution Solve(MilitaryObject[] militaryObjects, int maxSoldiersCount);
+    Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount);
 }

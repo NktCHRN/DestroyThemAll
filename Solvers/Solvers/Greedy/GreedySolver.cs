@@ -4,7 +4,7 @@ namespace Solvers.Solvers.Greedy;
 
 public sealed class GreedySolver : ISolver
 {
-    public Solution Solve(MilitaryObject[] militaryObjects, int maxSoldiersCount)
+    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
     {
         var x = new Solution();
         var sortedObjects = 

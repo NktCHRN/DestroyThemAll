@@ -4,7 +4,7 @@ namespace Solvers.Solvers.Bruteforce;
 
 public sealed class BruteforceSolver : ISolver
 {
-    public Solution Solve(MilitaryObject[] militaryObjects, int maxSoldiersCount)
+    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
     {
         var currentSolution = new Solution();
         var resultSolution = new Solution();
@@ -15,7 +15,7 @@ public sealed class BruteforceSolver : ISolver
 
         void SolveInternal(int startJ)
         {
-            for (var j = startJ; j < militaryObjects.Length; j++)
+            for (var j = startJ; j < militaryObjects.Count; j++)
             {
                 var currentObject = militaryObjects[j];
                 if (currentObject.SoldiersCount + currentSolution.TotalSoldiersCount <= maxSoldiersCount)
