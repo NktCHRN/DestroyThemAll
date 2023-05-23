@@ -13,7 +13,7 @@ public sealed class GreedySolver : ISolver
         {
             if (maxSoldiersCount-x.TotalSoldiersCount >= obj.SoldiersCount)
             {
-                x.AddMilitaryObject(obj);
+                x.AddLastMilitaryObject(obj);
             }
         }
         return x;
