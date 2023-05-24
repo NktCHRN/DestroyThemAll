@@ -1,5 +1,6 @@
 ﻿using Common;
 using Demo.UI;
+using Newtonsoft.Json;
 using Solvers.Common;
 using Solvers.Solvers.Bruteforce;
 using Solvers.Solvers.Dynamic;
@@ -97,6 +98,7 @@ public sealed class SolverPrinter : IPrinter
         var geneticSolver = new GeneticSolver();
         SetupGeneticSolver(geneticSolver);
 
+        Console.WriteLine();
         var solvers = new ISolver[] { new GreedySolver(), geneticSolver, new BruteforceSolver(), new DynamicSolver() };
         var solutions = solvers.Select(s => s.Solve(problem)).ToList();
 
@@ -116,6 +118,30 @@ public sealed class SolverPrinter : IPrinter
             }
             Console.WriteLine();
         }
+
+        new Dialog
+        {
+            Question = "Do you want to write problem and solutions to files as Json?",
+            YAction = () =>
+            {
+                Console.WriteLine();
+
+                var serializedProblem = JsonConvert.SerializeObject(problem);
+                var serializedSolutions = solutions.Select(s => JsonConvert.SerializeObject((SolutionModel)s)).ToList();
+
+                const string problemFileName = "problem.json";
+                File.WriteAllText(problemFileName, serializedProblem);
+                Console.WriteLine($"The problem was written to {problemFileName}");
+                Console.Write("Solutions were written to files:");
+                for (var i = 0; i < solvers.Length; i++)
+                {
+                    var fileName = $"{solvers[i].AlgorithmName.Replace(" ", "-").ToLower()}-solution.json";
+                    File.WriteAllText(fileName, serializedSolutions[i]);
+                    Console.Write($" {fileName}");
+                }
+                Console.WriteLine(Environment.NewLine);
+            }
+        }.Print();
     }
 
     private static void SetupGeneticSolver(GeneticSolver solver)
