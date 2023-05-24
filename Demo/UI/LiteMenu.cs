@@ -8,7 +8,7 @@ public sealed class LiteMenu
 
     public ConsoleColor Color { get; set; } = ConsoleColor.DarkGreen;
 
-    public ICollection<MenuItem> Items { get; set; } = new List<MenuItem>();
+    public ICollection<LiteMenuItem> Items { get; set; } = new List<LiteMenuItem>();
 
     public void Print()
     {

@@ -11,7 +11,6 @@ using Solvers.Solvers.Genetic;
 using Solvers.Solvers.Greedy;
 
 Console.ForegroundColor = ConsoleColor.DarkGreen;
-IPrinter mainMenuItemPrinter = null!;
 var mainMenu = new Menu
 {
     Header = Constants.Header,
@@ -21,20 +20,19 @@ var mainMenu = new Menu
         new MenuItem
         {
             Text = "Solver",
-            Action = () => mainMenuItemPrinter = new SolverPrinter()
+            Printer = new SolverPrinter()
         },
         new MenuItem
         {
             Text = "Experiments",
-            Action = () => mainMenuItemPrinter = new ExperimentsPrinter()
+            Printer = new ExperimentsPrinter()
         },
         new MenuItem
         {
             Text = "View",
-            Action = () => mainMenuItemPrinter = new ViewModePrinter()
+            Printer = new ViewModePrinter()
         },
-    },
-    Callback = () => mainMenuItemPrinter!.Print()
+    }
 };
 mainMenu.Print();
 

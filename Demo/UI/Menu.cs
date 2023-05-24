@@ -10,8 +10,6 @@ public sealed class Menu
 
     public ICollection<MenuItem> Items { get; set; } = new List<MenuItem>();
 
-    public Action? Callback { get; set; }
-
     public void Print(bool closeAfter = false)
     {
         if (Items is not null && Items.Any())
@@ -43,8 +41,7 @@ public sealed class Menu
             {
                 selected--;
                 Console.Clear();
-                Items.ElementAt(selected)?.Action?.Invoke();
-                Callback?.Invoke();
+                Items.ElementAt(selected)?.Printer?.Print();
                 Console.Clear();
                 if (!closeAfter)
                     Print();
