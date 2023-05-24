@@ -1,7 +1,7 @@
 ﻿using Demo.Common;
 
 namespace Demo.Printers;
-public sealed class ViewPrinter : IPrinter
+public sealed class ViewModePrinter : IPrinter
 {
     public void Print()
     {

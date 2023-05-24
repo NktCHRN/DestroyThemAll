@@ -1,6 +1,7 @@
 ﻿using Common;
 using Demo;
 using Demo.Common;
+using Demo.Printers;
 using Demo.UI;
 using Plotly.NET.CSharp;
 using Solvers.Common;
@@ -10,7 +11,7 @@ using Solvers.Solvers.Genetic;
 using Solvers.Solvers.Greedy;
 
 Console.ForegroundColor = ConsoleColor.DarkGreen;
-IPrinter mainMenuItemPrinter;
+IPrinter mainMenuItemPrinter = null!;
 var mainMenu = new Menu
 {
     Header = Constants.Header,
@@ -19,21 +20,26 @@ var mainMenu = new Menu
     {
         new MenuItem
         {
-            Text = "Solver"
+            Text = "Solver",
+            Action = () => mainMenuItemPrinter = new SolverPrinter()
         },
         new MenuItem
         {
-            Text = "Experiments"
+            Text = "Experiments",
+            Action = () => mainMenuItemPrinter = new ExperimentsPrinter()
         },
         new MenuItem
         {
-            Text = "View"
+            Text = "View",
+            Action = () => mainMenuItemPrinter = new ViewModePrinter()
         },
-    }
+    },
+    Callback = () => mainMenuItemPrinter!.Print()
 };
 mainMenu.Print();
 
 Console.ResetColor();
+
 //var militaryObjects = new MilitaryObject[]
 //    { new("O1", 3, 5), new("O2", 4, 7), new("O3", 6, 6), new("O4", 7, 12), new("O5", 2, 10) };
 //const int maxSoldiersCount = 16;
@@ -53,7 +59,7 @@ Console.ResetColor();
 //).WithTraceInfo("info 1"),
 //Chart.Line<double, double, string>(
 //    x: new double[] { 1, 2, 5 },
-//    y: new double[] { 5, 10, 50 }
+//    y: new double[] { 5, 18, 50 }
 //) }).WithXAxisStyle<double, double, string>(Title: Plotly.NET.Title.init("xAxis 111")).Show();
 
 //Console.ReadLine();
