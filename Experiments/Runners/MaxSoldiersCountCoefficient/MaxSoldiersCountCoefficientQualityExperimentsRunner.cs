@@ -1,8 +1,8 @@
 ﻿using Experiments.Abstractions;
 using ProblemGenerators;
 
-namespace Experiments.Runners;
-public sealed class ObjectsCountQualityExperimentsRunner : IExperimentRunner
+namespace Experiments.Runners.MaxSoldiersCountCoefficient;
+public sealed class MaxSoldiersCountCoefficientQualityExperimentsRunner : IExperimentRunner
 {
     public void Run(ProblemGenerator problemGenerator)
     {

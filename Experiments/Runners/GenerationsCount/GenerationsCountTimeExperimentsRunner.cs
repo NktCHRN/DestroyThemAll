@@ -1,8 +1,8 @@
 ﻿using Experiments.Abstractions;
 using ProblemGenerators;
 
-namespace Experiments.Runners;
-public sealed class PopulationSizeTimeExperimentsRunner : IExperimentRunner
+namespace Experiments.Runners.GenerationsCount;
+public sealed class GenerationsCountTimeExperimentsRunner : IExperimentRunner
 {
     public void Run(ProblemGenerator problemGenerator)
     {
