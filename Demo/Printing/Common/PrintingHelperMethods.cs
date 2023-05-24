@@ -26,4 +26,35 @@ internal static class PrintingHelperMethods
             .WithMinGreaterThanOrEqualTo(1)
             .GetNumber();
     }
+
+    public static LoopParameters<T> GetLoopParameters<T>(T lowerBoundary, T? upperBoundary = null) where T : struct, IComparable<T>
+    {
+        var start = new NumberForm<T>
+        {
+            Name = "start"
+        }
+            .WithMinGreaterThan(lowerBoundary)
+            .GetNumber();
+
+        var step = new NumberForm<T>
+        {
+            Name = "step"
+        }
+            .WithMinGreaterThan(default)
+            .GetNumber();
+
+        var endForm = new NumberForm<T>
+        {
+            Name = "end"
+        }
+            .WithMinGreaterThanOrEqualTo(start);
+        if (upperBoundary is not null)
+        {
+            endForm = endForm
+                .WithMaxLessThan(upperBoundary.Value);
+        }
+        var end = endForm.GetNumber();
+
+        return new(start, step, end);
+    }
 }

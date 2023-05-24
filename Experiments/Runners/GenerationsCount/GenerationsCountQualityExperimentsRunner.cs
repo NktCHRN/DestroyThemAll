@@ -1,10 +1,11 @@
 ﻿using Experiments.Abstractions;
+using Experiments.Common;
 using ProblemGenerators;
 
-namespace Experiments.Runners;
+namespace Experiments.Runners.GenerationsCount;
 public sealed class GenerationsCountQualityExperimentsRunner : IExperimentRunner
 {
-    public void Run(ProblemGenerator problemGenerator)
+    public ExperimentResult Run(ProblemGenerator problemGenerator)
     {
         throw new NotImplementedException();
     }

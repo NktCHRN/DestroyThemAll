@@ -1,7 +1,8 @@
-﻿using ProblemGenerators;
+﻿using Experiments.Common;
+using ProblemGenerators;
 
 namespace Experiments.Abstractions;
 public interface IExperimentRunner
 {
-    void Run(ProblemGenerator problemGenerator);
+    ExperimentResult Run(ProblemGenerator problemGenerator);
 }
