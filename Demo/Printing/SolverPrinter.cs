@@ -3,7 +3,7 @@ using Demo.Printing.Setupers;
 using Demo.UI;
 using Newtonsoft.Json;
 using ProblemGenerators;
-using Solvers.Common;
+using Solvers.Abstractions;
 using Solvers.Solvers.Bruteforce;
 using Solvers.Solvers.Dynamic;
 using Solvers.Solvers.Genetic;

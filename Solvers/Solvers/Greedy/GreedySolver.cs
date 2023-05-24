@@ -1,5 +1,5 @@
 ﻿using Common;
-using Solvers.Common;
+using Solvers.Abstractions;
 
 namespace Solvers.Solvers.Greedy;
 

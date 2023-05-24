@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace Solvers.Common;
+namespace Solvers.Abstractions;
 
 public interface ISolver
 {

@@ -1,0 +1,11 @@
+﻿using Experiments.Abstractions;
+using ProblemGenerators;
+
+namespace Experiments.Runners;
+public sealed class MaxSoldiersCountCoefficientQualityExperimentsRunner : IExperimentRunner
+{
+    public void Run(ProblemGenerator problemGenerator)
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -1,13 +1,6 @@
-﻿using Common;
-using Demo;
+﻿using Demo;
 using Demo.Printing;
 using Demo.UI;
-using Plotly.NET.CSharp;
-using Solvers.Common;
-using Solvers.Solvers.Bruteforce;
-using Solvers.Solvers.Dynamic;
-using Solvers.Solvers.Genetic;
-using Solvers.Solvers.Greedy;
 using System.Globalization;
 
 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
