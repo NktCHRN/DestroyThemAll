@@ -8,13 +8,15 @@ using Solvers.Solvers.Bruteforce;
 using Solvers.Solvers.Dynamic;
 using Solvers.Solvers.Genetic;
 using Solvers.Solvers.Greedy;
+using System.Globalization;
 
+Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
 Console.ForegroundColor = ConsoleColor.DarkGreen;
 var mainMenu = new Menu
 {
     Header = Constants.Header,
     Name = "action",
-    Items = new List<MenuItem>
+    Items = new MenuItem[]
     {
         new MenuItem
         {

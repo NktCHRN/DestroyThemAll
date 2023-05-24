@@ -5,6 +5,8 @@ namespace Solvers.Solvers.Bruteforce;
 
 public sealed class BruteforceSolver : ISolver
 {
+    public string AlgorithmName => "Brute force";
+
     public Solution Solve(Problem problem)
     {
         var militaryObjects = problem.MilitaryObjects;

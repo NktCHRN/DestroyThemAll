@@ -5,6 +5,8 @@ namespace Solvers.Solvers.Greedy;
 
 public sealed class GreedySolver : ISolver
 {
+    public string AlgorithmName => "Greedy";
+
     public Solution Solve(Problem problem)
     {
         var x = new Solution();

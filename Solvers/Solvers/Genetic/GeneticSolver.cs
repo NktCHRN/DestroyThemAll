@@ -5,6 +5,8 @@ namespace Solvers.Solvers.Genetic;
 
 public sealed class GeneticSolver : ISolver
 {
+    public string AlgorithmName => "Genetic";
+
     private IReadOnlyList<MilitaryObject> _militaryObjects = null!;
     private int _maxSoldiersCount;
 
@@ -15,6 +17,11 @@ public sealed class GeneticSolver : ISolver
     public int PopulationSize {get;set;}
     public double CrossoverRate { get; set; }
     public double MutationRate { get; set; }
+
+    public GeneticSolver()
+    {
+        SetupDefaultProperties();
+    }
 
     public Solution Solve(Problem problem)
     {
@@ -200,7 +207,7 @@ public sealed class GeneticSolver : ISolver
     private static (int[], int[]) SinglePointCrossover(int[] parent1, int[] parent2)
     {
         var random = new Random();
-        var s = random.Next(1, parent1.Length - 1);
+        var s = random.Next(0, parent1.Length - 1);
 
         var child1 = new int[parent1.Length];
         var child2 = new int[parent2.Length];

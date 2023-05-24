@@ -10,6 +10,8 @@ public sealed class LiteMenu
 
     public ICollection<LiteMenuItem> Items { get; set; } = new List<LiteMenuItem>();
 
+    public Action? Callback { get; set; }
+
     public void Print()
     {
         if (Items is not null && Items.Any())
@@ -40,7 +42,8 @@ public sealed class LiteMenu
             if (selected != 0)
             {
                 selected--;
-                Items.ElementAt(selected)?.Action?.Invoke();
+                Items.ElementAt(selected)?.Action?.Invoke(); 
+                Callback?.Invoke();
             }
         }
     }

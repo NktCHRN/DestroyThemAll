@@ -5,6 +5,8 @@ namespace Solvers.Solvers.Dynamic;
 
 public sealed class DynamicSolver : ISolver
 {
+    public string AlgorithmName => "Dynamic programming";
+
     public Solution Solve(Problem problem)
     {
         var militaryObjects = problem.MilitaryObjects;
