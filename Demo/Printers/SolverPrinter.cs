@@ -129,13 +129,15 @@ public sealed class SolverPrinter : IPrinter
                 var serializedProblem = JsonConvert.SerializeObject(problem);
                 var serializedSolutions = solutions.Select(s => JsonConvert.SerializeObject((SolutionModel)s)).ToList();
 
-                const string problemFileName = "problem.json";
+                const string folderName = "Output";
+                Directory.CreateDirectory(folderName);
+                var problemFileName = Path.Combine(folderName, "problem.json");
                 File.WriteAllText(problemFileName, serializedProblem);
                 Console.WriteLine($"The problem was written to {problemFileName}");
                 Console.Write("Solutions were written to files:");
                 for (var i = 0; i < solvers.Length; i++)
                 {
-                    var fileName = $"{solvers[i].AlgorithmName.Replace(" ", "-").ToLower()}-solution.json";
+                    var fileName = Path.Combine(folderName, $"{solvers[i].AlgorithmName.Replace(" ", "-").ToLower()}-solution.json");
                     File.WriteAllText(fileName, serializedSolutions[i]);
                     Console.Write($" {fileName}");
                 }
