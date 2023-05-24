@@ -1,6 +1,6 @@
 ﻿using Common;
 using Demo;
-using Demo.Printers;
+using Demo.Printing;
 using Demo.UI;
 using Plotly.NET.CSharp;
 using Solvers.Common;

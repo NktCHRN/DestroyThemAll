@@ -1,7 +1,7 @@
 ﻿using Demo.UI;
 
-namespace Demo.Printers;
-public sealed class ExperimentsPrinter : IPrinter
+namespace Demo.Printing;
+public sealed class ViewModePrinter : IPrinter
 {
     public void Print()
     {

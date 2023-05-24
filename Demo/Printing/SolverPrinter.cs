@@ -1,13 +1,16 @@
 ﻿using Common;
+using Demo.Printing.Setupers;
 using Demo.UI;
 using Newtonsoft.Json;
+using ProblemGenerators;
 using Solvers.Common;
 using Solvers.Solvers.Bruteforce;
 using Solvers.Solvers.Dynamic;
 using Solvers.Solvers.Genetic;
 using Solvers.Solvers.Greedy;
+using static Demo.Printing.Common.PrintingHelperMethods;
 
-namespace Demo.Printers;
+namespace Demo.Printing;
 public sealed class SolverPrinter : IPrinter
 {
     public void Print()
@@ -28,7 +31,8 @@ public sealed class SolverPrinter : IPrinter
                 },
                 new LiteMenuItem
                 {
-                    Text = "Generate the problem"
+                    Text = "Generate the problem",
+                    Action = () => problem = GenerateProblem()
                 },
                 new LiteMenuItem
                 {
@@ -93,6 +97,20 @@ public sealed class SolverPrinter : IPrinter
         return new Problem(objects, maxSoldiersCount);
     }
 
+    private Problem GenerateProblem()
+    {
+        var generator = new ProblemGenerator();
+        ProblemGeneratorSetuper.SetupProblemGenerator(generator);
+
+        Console.WriteLine();
+
+        var objectsCount = ProblemGeneratorSetuper.GetObjectsCount(generator);
+        var problem = generator.Generate(objectsCount);
+        PrintProblem(problem);
+
+        return problem;
+    }
+
     private static Problem ReadProblemFromFile()
     {
         Console.WriteLine();
@@ -107,15 +125,7 @@ public sealed class SolverPrinter : IPrinter
         var problem = JsonConvert.DeserializeObject<Problem>(fileData) ?? throw new InvalidOperationException("JSON object is null");
 
         Console.WriteLine();
-        Console.WriteLine("Objects:");
-        var j = 1;
-        foreach (var militaryObject in problem.MilitaryObjects)
-        {
-            Console.WriteLine($"{j}. Name: {militaryObject.Name}; Time: {militaryObject.Time}; Soldiers count: {militaryObject.SoldiersCount}");
-            j++;
-        }
-        Console.WriteLine();
-        Console.WriteLine($"Available soldiers: {problem.MaxSoldiersCount}");
+        PrintProblem(problem);
 
         return problem;
     }
@@ -124,7 +134,7 @@ public sealed class SolverPrinter : IPrinter
     {
         Console.WriteLine();
         var geneticSolver = new GeneticSolver();
-        SetupGeneticSolver(geneticSolver);
+        GeneticSolverSetuper.SetupGeneticSolver(geneticSolver);
 
         Console.WriteLine();
         var solvers = new ISolver[] { new GreedySolver(), geneticSolver, new BruteforceSolver(), new DynamicSolver() };
@@ -170,37 +180,6 @@ public sealed class SolverPrinter : IPrinter
                     Console.Write($" {fileName}");
                 }
                 Console.WriteLine(Environment.NewLine);
-            }
-        }.Print();
-    }
-
-    private static void SetupGeneticSolver(GeneticSolver solver)
-    {
-        new Dialog
-        {
-            Question = $"Do you want to change quantity of generations (default: {solver.GenerationsCount})?",
-            YAction = () =>
-            {
-                solver.GenerationsCount = new NumberForm<int>
-                {
-                    Name = "quantity of generations"
-                }
-                .WithMinGreaterThanOrEqualTo(1)
-                .GetNumber();
-            }
-        }.Print();
-
-        new Dialog
-        {
-            Question = $"Do you want to change the initial population size (default: {solver.PopulationSize})?",
-            YAction = () =>
-            {
-                solver.PopulationSize = new NumberForm<int>
-                {
-                    Name = "population size"
-                }
-                .WithMinGreaterThanOrEqualTo(2)
-                .GetNumber();
             }
         }.Print();
     }
