@@ -1,6 +1,5 @@
 ﻿using Common;
 using Demo;
-using Demo.Common;
 using Demo.Printers;
 using Demo.UI;
 using Plotly.NET.CSharp;

@@ -1,4 +1,4 @@
-﻿using Demo.Common;
+﻿using Demo.UI;
 
 namespace Demo.Printers;
 public sealed class SolverPrinter : IPrinter

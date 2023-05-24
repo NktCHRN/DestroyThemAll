@@ -1,6 +1,4 @@
-﻿using Demo.Common;
-
-namespace Demo.UI;
+﻿namespace Demo.UI;
 public sealed class MenuItem
 {
     public string Text { get; set; } = string.Empty;
