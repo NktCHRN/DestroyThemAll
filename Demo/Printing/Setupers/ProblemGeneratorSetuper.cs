@@ -4,16 +4,6 @@ using ProblemGenerators;
 namespace Demo.Printing.Setupers;
 internal static class ProblemGeneratorSetuper
 {
-    public static int GetObjectsCount(ProblemGenerator generator)
-    {
-        return new NumberForm<int>
-            {
-                Name = "objects quantity"
-            }
-            .WithMinGreaterThanOrEqualTo(1)
-            .GetNumber();
-    }
-
     public static void SetupProblemGenerator(ProblemGenerator generator)
     {
         Console.WriteLine("Let's setup a problem generator");

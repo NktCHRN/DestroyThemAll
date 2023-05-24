@@ -1,4 +1,5 @@
 ﻿using Common;
+using Demo.UI;
 
 namespace Demo.Printing.Common;
 internal static class PrintingHelperMethods
@@ -14,5 +15,15 @@ internal static class PrintingHelperMethods
         }
         Console.WriteLine();
         Console.WriteLine($"Available soldiers: {problem.MaxSoldiersCount}");
+    }
+
+    public static int GetObjectsCount()
+    {
+        return new NumberForm<int>
+        {
+            Name = "objects quantity"
+        }
+            .WithMinGreaterThanOrEqualTo(1)
+            .GetNumber();
     }
 }

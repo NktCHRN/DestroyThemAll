@@ -51,12 +51,7 @@ public sealed class SolverPrinter : IPrinter
     private static Problem EnterProblemManually()
     {
         Console.WriteLine();
-        var objectsCount = new NumberForm<int>
-        {
-            Name = "objects quantity"
-        }
-        .WithMinGreaterThanOrEqualTo(1)
-        .GetNumber();
+        var objectsCount = GetObjectsCount();
 
         var objects = new List<MilitaryObject>(objectsCount);
         Console.WriteLine();
@@ -97,14 +92,14 @@ public sealed class SolverPrinter : IPrinter
         return new Problem(objects, maxSoldiersCount);
     }
 
-    private Problem GenerateProblem()
+    private static Problem GenerateProblem()
     {
         var generator = new ProblemGenerator();
         ProblemGeneratorSetuper.SetupProblemGenerator(generator);
 
         Console.WriteLine();
 
-        var objectsCount = ProblemGeneratorSetuper.GetObjectsCount(generator);
+        var objectsCount = GetObjectsCount();
         var problem = generator.Generate(objectsCount);
         PrintProblem(problem);
 
