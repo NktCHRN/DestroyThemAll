@@ -24,7 +24,7 @@ public sealed class SolverPrinter : IPrinter
                 new LiteMenuItem
                 {
                     Text = "Enter the problem manually",
-                    Action = () => problem = EnterTheProblemManually()
+                    Action = () => problem = EnterProblemManually()
                 },
                 new LiteMenuItem
                 {
@@ -32,7 +32,8 @@ public sealed class SolverPrinter : IPrinter
                 },
                 new LiteMenuItem
                 {
-                    Text = "Enter the problem from file"
+                    Text = "Read the problem from file",
+                    Action = () => problem = ReadProblemFromFile()
                 },
             },
             Callback = () =>
@@ -43,7 +44,7 @@ public sealed class SolverPrinter : IPrinter
         }.Print();
     }
 
-    private static Problem EnterTheProblemManually()
+    private static Problem EnterProblemManually()
     {
         Console.WriteLine();
         var objectsCount = new NumberForm<int>
@@ -90,6 +91,33 @@ public sealed class SolverPrinter : IPrinter
         .GetNumber();
 
         return new Problem(objects, maxSoldiersCount);
+    }
+
+    private static Problem ReadProblemFromFile()
+    {
+        Console.WriteLine();
+        var fileName = new StringForm
+        {
+            Name = "json file name",
+            IsValid = f => File.Exists(f),
+            ErrorMessage = "File does not exist"
+        }.GetString();
+
+        var fileData = File.ReadAllText(fileName);
+        var problem = JsonConvert.DeserializeObject<Problem>(fileData) ?? throw new InvalidOperationException("JSON object is null");
+
+        Console.WriteLine();
+        Console.WriteLine("Objects:");
+        var j = 1;
+        foreach (var militaryObject in problem.MilitaryObjects)
+        {
+            Console.WriteLine($"{j}. Name: {militaryObject.Name}; Time: {militaryObject.Time}; Soldiers count: {militaryObject.SoldiersCount}");
+            j++;
+        }
+        Console.WriteLine();
+        Console.WriteLine($"Available soldiers: {problem.MaxSoldiersCount}");
+
+        return problem;
     }
 
     private static void SolveProblem(Problem problem)
