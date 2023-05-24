@@ -54,14 +54,14 @@ public sealed class GeneticSolver : ISolver
 
     private void TryAddMutatedChild(int[] mutatedChild, List<int[]> population)
     {
-        int total = CheckIfCorrect(mutatedChild);
+        int total = CalculateAmountOfPeople(mutatedChild);
         if (total <= _maxSoldiersCount && total != 0)
         {
             population.Add(mutatedChild);
         }
     }
 
-    private int CheckIfCorrect(int[] mutatedChild)
+    private int CalculateAmountOfPeople(int[] mutatedChild)
     {
         int totalAmountOfPeople = 0;
             
