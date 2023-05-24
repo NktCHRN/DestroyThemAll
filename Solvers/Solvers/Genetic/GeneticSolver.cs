@@ -24,17 +24,19 @@ public sealed class GeneticSolver : ISolver
 
         var population = CreatePopulation();
         int[] bestIndividual = null!;
+        var filteredPopulation = FilterPopulation(population);
 
         _resultSolution = new();
         for (int i = 0; i < GenerationsCount; i++)
         {
-            var filteredPopulation = FilterPopulation(population);
             var (parent1, parent2) = ChooseParents(filteredPopulation);
             var (child1, child2) = SinglePointCrossover(parent1, parent2);
+
             child1 = Mutation(child1, MutationRate);
             child2 = Mutation(child2, MutationRate);
-            filteredPopulation.Add(child1);
-            filteredPopulation.Add(child2);
+
+            TryAddMutatedChild(child1, filteredPopulation);
+            TryAddMutatedChild(child2, filteredPopulation);
 
             bestIndividual = Fitness(filteredPopulation);
         }
@@ -48,6 +50,28 @@ public sealed class GeneticSolver : ISolver
         }
 
         return _resultSolution;
+    }
+
+    private void TryAddMutatedChild(int[] mutatedChild, List<int[]> population)
+    {
+        int total = CheckIfCorrect(mutatedChild);
+        if (total <= _maxSoldiersCount && total != 0)
+        {
+            population.Add(mutatedChild);
+        }
+    }
+
+    private int CheckIfCorrect(int[] mutatedChild)
+    {
+        int totalAmountOfPeople = 0;
+            
+        foreach (int gene in mutatedChild)
+        {
+            totalAmountOfPeople = Enumerable.Range(0, _militaryObjects.Count)
+                .Sum(i => _militaryObjects[i].SoldiersCount * gene);
+        }
+
+        return totalAmountOfPeople; 
     }
 
     private void SetupDefaultProperties()
@@ -108,8 +132,14 @@ public sealed class GeneticSolver : ISolver
                 filteredPopulation.Add(individual);
             }
         }
+        
+        if (filteredPopulation.Count == 0)
+        {
+            CreatePopulation(); 
+            filteredPopulation = FilterPopulation(_population);
+        }
 
-        return filteredPopulation;
+        return filteredPopulation; 
     }
 
     private static int HelpFitness(int[] chromosome) => chromosome.Sum();
@@ -160,6 +190,8 @@ public sealed class GeneticSolver : ISolver
         var parent1 = population[random.Next(population.Count)];
 
         var parent2 = Fitness(population);
+        
+        
 
         return (parent1, parent2);
     }
