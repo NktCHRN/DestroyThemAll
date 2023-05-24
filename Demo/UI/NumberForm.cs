@@ -25,7 +25,7 @@ public sealed class NumberForm<T> where T : struct, IComparable<T>
         {
             var restrictionString = string.Empty;
             if (_min is not null)
-                restrictionString += $"greater than {(_minComparisonType is ComparisonType.Loose ? "or equal " : string.Empty)}{_min}";
+                restrictionString += $"greater than {(_minComparisonType is ComparisonType.Loose ? "or equal to " : string.Empty)}{_min}";
             if (_max is not null)
                 restrictionString += $"{(_min is null ? " and" : string.Empty)} less than {(_maxComparisonType is ComparisonType.Loose ? "or equal " : string.Empty)}{_max}";
             return restrictionString;

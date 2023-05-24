@@ -3,6 +3,7 @@ using Demo.Printing.Setupers;
 using Demo.UI;
 using Experiments.Abstractions;
 using Experiments.Common;
+using Experiments.Runners.MaxSoldiersCountCoefficient;
 using Experiments.Runners.ObjectsCount;
 using Plotly.NET.CSharp;
 using ProblemGenerators;
@@ -49,7 +50,7 @@ public sealed class ExperimentsPrinter : IPrinter
                         new Dialog
                         {
                             Question = $"Do you want to change objects count loop parameters? (default: (" +
-                                $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; start: {specificRunner.LoopParameters.End}))",
+                                $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
                             YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(0)
                         }.Print();
                     }
@@ -76,14 +77,51 @@ public sealed class ExperimentsPrinter : IPrinter
                         new Dialog
                         {
                             Question = $"Do you want to change objects count loop parameters? (default: (" +
-                                $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; start: {specificRunner.LoopParameters.End}))",
+                                $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
                             YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(0)
+                        }.Print();
+                    }
+                },
+                new LiteMenuItem
+                {
+                    Text = "Max soldiers count coefficient / Time",
+                    Action = () =>
+                    {
+                        Console.WriteLine();
+                        problemGenerator = new ProblemGenerator();
+                        Console.WriteLine("Let's setup a problem generator");
+                        ProblemGeneratorSetuper.SetupProblemGeneratorOptionalProperties(problemGenerator);
+
+                        Console.WriteLine();
+                        var geneticSolver = new GeneticSolver();
+                        GeneticSolverSetuper.SetupGeneticSolver(geneticSolver);
+
+                        Console.WriteLine();
+                        var solvers = new ISolver[] { new GreedySolver(), geneticSolver, new BruteforceSolver(), new DynamicSolver() };
+                        var specificRunner = new MaxSoldiersCountCoefficientTimeExperimentsRunner(solvers);
+                        experimentRunner = specificRunner;
+
+                        Console.WriteLine();
+                        new Dialog
+                        {
+                            Question = $"Do you want to change objects quantity? (default: {specificRunner.ObjectsCount})",
+                            YAction = () => specificRunner.ObjectsCount = PrintingHelperMethods.GetObjectsCount()
+                        }.Print();
+
+                        Console.WriteLine();
+                        new Dialog
+                        {
+                            Question = $"Do you want to change objects count loop parameters? (default: (" +
+                                $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
+                            YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters<double>(0, 1)
                         }.Print();
                     }
                 },
             },
             Callback = () =>
             {
+                Console.WriteLine();
+                HelperMethods.Wait();
                 var results = experimentRunner.Run(problemGenerator);
                 if (results.ExperimentType is ExperimentType.Time)
                 {

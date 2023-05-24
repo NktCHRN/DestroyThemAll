@@ -13,6 +13,10 @@ public static class HelperMethods
         Console.WriteLine("Press enter co continue");
         Console.ReadLine();
     }
+    public static void Wait()
+    {
+        Console.WriteLine("Please, keep calm and wait for it...");
+    }
 
     public static void PrintHeader(string header)
     {

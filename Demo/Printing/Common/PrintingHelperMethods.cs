@@ -51,7 +51,7 @@ internal static class PrintingHelperMethods
         if (upperBoundary is not null)
         {
             endForm = endForm
-                .WithMaxLessThan(upperBoundary.Value);
+                .WithMaxLessThanOrEqualTo(upperBoundary.Value);
         }
         var end = endForm.GetNumber();
 
