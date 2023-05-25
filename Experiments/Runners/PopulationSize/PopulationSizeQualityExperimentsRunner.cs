@@ -4,7 +4,6 @@ using Experiments.Common;
 using ProblemGenerators;
 using Solvers.Abstractions;
 using Solvers.Solvers.Genetic;
-using System.Diagnostics;
 
 namespace Experiments.Runners.PopulationSize;
 public sealed class PopulationSizeQualityExperimentsRunner : IExperimentRunner

@@ -3,6 +3,7 @@ using Demo.Printing.Setupers;
 using Demo.UI;
 using Experiments.Abstractions;
 using Experiments.Common;
+using Experiments.Runners.GenerationsCount;
 using Experiments.Runners.MaxSoldiersCountCoefficient;
 using Experiments.Runners.ObjectsCount;
 using Experiments.Runners.PopulationSize;
@@ -150,6 +151,74 @@ public sealed class ExperimentsPrinter : IPrinter
                             Question = $"Do you want to change objects count loop parameters? (default: (" +
                                 $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
                             YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters<double>(0, 1)
+                        }.Print();
+                    }
+                },
+                new LiteMenuItem
+                {
+                    Text = "Generations count / Time",
+                    Action = () =>
+                    {
+                        Console.WriteLine();
+                        problemGenerator = new ProblemGenerator();
+                        ProblemGeneratorSetuper.SetupProblemGenerator(problemGenerator);
+
+                        Console.WriteLine();
+                        var geneticSolver = new GeneticSolver();
+                        Console.WriteLine("Let's setup a genetic solver");
+                        GeneticSolverSetuper.SetupGeneticSolverPopulationSize(geneticSolver);
+
+                        Console.WriteLine();
+                        var specificRunner = new GenerationsCountTimeExperimentsRunner(geneticSolver);
+                        experimentRunner = specificRunner;
+
+                        Console.WriteLine();
+                        new Dialog
+                        {
+                            Question = $"Do you want to change objects quantity? (default: {specificRunner.ObjectsCount})",
+                            YAction = () => specificRunner.ObjectsCount = PrintingHelperMethods.GetObjectsCount()
+                        }.Print();
+
+                        Console.WriteLine();
+                        new Dialog
+                        {
+                            Question = $"Do you want to change objects count loop parameters? (default: (" +
+                                $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
+                            YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(2)
+                        }.Print();
+                    }
+                },
+                new LiteMenuItem
+                {
+                    Text = "Generations count / Quality",
+                    Action = () =>
+                    {
+                        Console.WriteLine();
+                        problemGenerator = new ProblemGenerator();
+                        ProblemGeneratorSetuper.SetupProblemGenerator(problemGenerator);
+
+                        Console.WriteLine();
+                        var geneticSolver = new GeneticSolver();
+                        Console.WriteLine("Let's setup a genetic solver");
+                        GeneticSolverSetuper.SetupGeneticSolverPopulationSize(geneticSolver);
+
+                        Console.WriteLine();
+                        var specificRunner = new GenerationsCountQualityExperimentsRunner(geneticSolver, new BruteforceSolver());
+                        experimentRunner = specificRunner;
+
+                        Console.WriteLine();
+                        new Dialog
+                        {
+                            Question = $"Do you want to change objects quantity? (default: {specificRunner.ObjectsCount})",
+                            YAction = () => specificRunner.ObjectsCount = PrintingHelperMethods.GetObjectsCount()
+                        }.Print();
+
+                        Console.WriteLine();
+                        new Dialog
+                        {
+                            Question = $"Do you want to change objects count loop parameters? (default: (" +
+                                $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
+                            YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(2)
                         }.Print();
                     }
                 },
