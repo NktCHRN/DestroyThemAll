@@ -33,6 +33,8 @@ public sealed class ProblemGenerator
         (
             Name: $"O{number}",
             SoldiersCount: _random.Next(MinSoldiersPerObjectCount, MaxSoldiersPerObjectCount),
-            Time: _random.NextDouble() * (MaxTimePerObject - MinTimePerObject) + MinTimePerObject);
+            Time: RoundByMinutes(_random.NextDouble() * (MaxTimePerObject - MinTimePerObject) + MinTimePerObject));
     }
+
+    private static double RoundByMinutes(double value) => Math.Round(value * 60, MidpointRounding.AwayFromZero) / 60;
 }
