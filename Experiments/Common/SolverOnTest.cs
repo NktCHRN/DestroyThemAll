@@ -21,7 +21,7 @@ public sealed class SolverOnTest
     internal void AddToBatch(double value)
     {
         _currentBatch.Add(value);
-        if (_currentBatch.Count == _batchSize - 1)
+        if (_currentBatch.Count == _batchSize)
         {
             _results.Add(_currentBatch.Sum(b => b) / _batchSize);
             _currentBatch.Clear();
@@ -31,7 +31,7 @@ public sealed class SolverOnTest
     internal void AddToSecondaryBatch(double value)
     {
         _currentSecondaryBatch.Add(value);
-        if (_currentSecondaryBatch.Count == _batchSize - 1)
+        if (_currentSecondaryBatch.Count == _batchSize)
         {
             _secondaryResults.Add(_currentSecondaryBatch.Sum(b => b) / _batchSize);
             _currentSecondaryBatch.Clear();
