@@ -1,11 +1,17 @@
-﻿using Solvers.Common;
+﻿using Common;
+using Solvers.Abstractions;
 
 namespace Solvers.Solvers.Bruteforce;
 
 public sealed class BruteforceSolver : ISolver
 {
-    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
+    public string AlgorithmName => "Brute force";
+
+    public Solution Solve(Problem problem)
     {
+        var militaryObjects = problem.MilitaryObjects;
+        var maxSoldiersCount = problem.MaxSoldiersCount;
+
         var currentSolution = new Solution();
         var resultSolution = new Solution();
 

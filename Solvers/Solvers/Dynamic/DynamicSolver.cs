@@ -1,11 +1,17 @@
-﻿using Solvers.Common;
+﻿using Common;
+using Solvers.Abstractions;
 
 namespace Solvers.Solvers.Dynamic;
 
 public sealed class DynamicSolver : ISolver
 {
-    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
+    public string AlgorithmName => "Dynamic programming";
+
+    public Solution Solve(Problem problem)
     {
+        var militaryObjects = problem.MilitaryObjects;
+        var maxSoldiersCount = problem.MaxSoldiersCount;
+
         var t = new double[militaryObjects.Count + 1, maxSoldiersCount + 1][];
         int k;
         for (k = 0; k <= maxSoldiersCount; k++)

@@ -1,9 +1,12 @@
-﻿using Solvers.Common;
+﻿using Common;
+using Solvers.Abstractions;
 
 namespace Solvers.Solvers.Genetic;
 
 public sealed class GeneticSolver : ISolver
 {
+    public string AlgorithmName => "Genetic";
+
     private IReadOnlyList<MilitaryObject> _militaryObjects = null!;
     private int _maxSoldiersCount;
 
@@ -15,10 +18,15 @@ public sealed class GeneticSolver : ISolver
     public double CrossoverRate { get; set; }
     public double MutationRate { get; set; }
 
-    public Solution Solve(IReadOnlyList<MilitaryObject> militaryObjects, int maxSoldiersCount)
+    public GeneticSolver()
     {
-        _militaryObjects = militaryObjects;
-        _maxSoldiersCount = maxSoldiersCount;
+        SetupDefaultProperties();
+    }
+
+    public Solution Solve(Problem problem)
+    {
+        _militaryObjects = problem.MilitaryObjects;
+        _maxSoldiersCount = problem.MaxSoldiersCount;
 
         SetupDefaultProperties();
 
@@ -41,11 +49,11 @@ public sealed class GeneticSolver : ISolver
             bestIndividual = Fitness(filteredPopulation);
         }
         
-        for (int i = 0; i < militaryObjects.Count; i++)
+        for (int i = 0; i < _militaryObjects.Count; i++)
         {
             if (bestIndividual[i] == 1)
             {
-                _resultSolution.AddLastMilitaryObject(militaryObjects[i]);
+                _resultSolution.AddLastMilitaryObject(_militaryObjects[i]);
             }
         }
 
@@ -199,7 +207,7 @@ public sealed class GeneticSolver : ISolver
     private static (int[], int[]) SinglePointCrossover(int[] parent1, int[] parent2)
     {
         var random = new Random();
-        var s = random.Next(1, parent1.Length - 1);
+        var s = random.Next(0, parent1.Length - 1);
 
         var child1 = new int[parent1.Length];
         var child2 = new int[parent2.Length];

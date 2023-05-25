@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\ProblemGenerators\ProblemGenerators.csproj" />
+    <ProjectReference Include="..\Solvers\Solvers.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Solvers.Common;
+﻿namespace Common;
 
 public sealed class Solution : ICloneable
 {
@@ -42,4 +42,10 @@ public sealed class Solution : ICloneable
         };
         return solutionCopy;
     }
+
+    public static explicit operator SolutionModel(Solution solution)
+        => new(solution.MilitaryObjects,
+                solution.TotalMilitaryObjectsCount,
+                solution.TotalSoldiersCount,
+                solution.TotalTime);
 }
