@@ -47,9 +47,15 @@ public sealed class GeneticSolver : ISolver
             TryAddMutatedChild(child2, filteredPopulation);
 
             bestIndividual = Fitness(filteredPopulation);
+
+            if (filteredPopulation.Count > 2)
+            {
+                var worstIndividual = FindWorst(filteredPopulation);
+                filteredPopulation.Remove(worstIndividual);
+            }
         }
         
-        for (int i = 0; i < _militaryObjects.Count; i++)
+        for (var i = 0; i < _militaryObjects.Count; i++)
         {
             if (bestIndividual[i] == 1)
             {
@@ -148,6 +154,38 @@ public sealed class GeneticSolver : ISolver
         }
 
         return filteredPopulation; 
+    }
+
+    private int[] FindWorst(List<int[]> population)
+    {
+        var worstFitness = int.MaxValue;
+        var worstTotalTime = double.PositiveInfinity;
+        int[] worstIndividual = null!;
+
+        foreach (var individual in population)
+        {
+            var fitness = HelpFitness(individual);
+
+            if (fitness < worstFitness)
+            {
+                worstFitness = fitness;
+                worstIndividual = individual;
+                worstTotalTime = HelpFitnessTime(individual);
+            }
+            else if (fitness == worstFitness)
+            {
+                var totalTime = HelpFitnessTime(individual);
+
+                if (totalTime > worstTotalTime)
+                {
+                    worstFitness = fitness;
+                    worstTotalTime = totalTime;
+                    worstIndividual = individual;
+                }
+            }
+        }
+
+        return worstIndividual;
     }
 
     private static int HelpFitness(int[] chromosome) => chromosome.Sum();
