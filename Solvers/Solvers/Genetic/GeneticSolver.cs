@@ -40,8 +40,8 @@ public sealed class GeneticSolver : ISolver
             var (parent1, parent2) = ChooseParents(filteredPopulation);
             var (child1, child2) = SinglePointCrossover(parent1, parent2);
 
-            child1 = Mutation(child1, MutationRate);
-            child2 = Mutation(child2, MutationRate);
+            child1 = Mutation(child1);
+            child2 = Mutation(child2);
 
             TryAddMutatedChild(child1, filteredPopulation);
             TryAddMutatedChild(child2, filteredPopulation);
@@ -221,14 +221,14 @@ public sealed class GeneticSolver : ISolver
         return (child1, child2);
     }
 
-    private static int[] Mutation(int[] chromosome, double mutationRate)
+    private int[] Mutation(int[] chromosome)
     {
         var random = new Random();
         var mutatedChromosome = (int[])chromosome.Clone();
 
-        for (int i = 0; i < chromosome.Length; i++)
+        for (var i = 0; i < chromosome.Length; i++)
         {
-            if (random.NextDouble() < mutationRate)
+            if (random.NextDouble() < MutationRate)
             {
                 mutatedChromosome[i] = 1 - mutatedChromosome[i];
             }
