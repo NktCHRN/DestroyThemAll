@@ -79,10 +79,9 @@ public sealed class GeneticSolver : ISolver
     {
         int totalAmountOfPeople = 0;
             
-        foreach (int gene in mutatedChild)
+        for (var i = 0; i < mutatedChild.Length; i++)
         {
-            totalAmountOfPeople = Enumerable.Range(0, _militaryObjects.Count)
-                .Sum(i => _militaryObjects[i].SoldiersCount * gene);
+            totalAmountOfPeople += _militaryObjects[i].SoldiersCount * mutatedChild[i];
         }
 
         return totalAmountOfPeople; 
