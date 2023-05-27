@@ -132,6 +132,14 @@ public sealed class SolverPrinter : IPrinter
         GeneticSolverSetuper.SetupGeneticSolver(geneticSolver);
 
         Console.WriteLine();
+        var showObjectsDetails = true;
+        new Dialog
+        {
+            Question = "Do you want to print details about each destroyed object?",
+            NAction = () => showObjectsDetails = false
+        }.Print();
+
+        Console.WriteLine();
         var solvers = new ISolver[] { new GreedySolver(), geneticSolver, new BruteforceSolver(), new DynamicSolver() };
         var solutions = solvers.Select(s => s.Solve(problem)).ToList();
 
@@ -143,11 +151,14 @@ public sealed class SolverPrinter : IPrinter
             Console.WriteLine($"Total objects count: {solution.MilitaryObjects.Count}; Total time: {solution.TotalTime} hours");
             Console.WriteLine($"Total soldiers count: {solution.TotalSoldiersCount}");
             Console.WriteLine("Objects:");
-            var j = 1;
-            foreach (var militaryObject in solution.MilitaryObjects)
+            if (showObjectsDetails)
             {
-                Console.WriteLine($"{j}. Name: {militaryObject.Name}; Time: {militaryObject.Time}; Soldiers count: {militaryObject.SoldiersCount}");
-                j++;
+                PrintObjectsWithDetails(solution.MilitaryObjects);
+            }
+            else
+            {
+                
+                PrintObjectsInOneLine(solution.MilitaryObjects);
             }
             Console.WriteLine();
         }
@@ -177,5 +188,20 @@ public sealed class SolverPrinter : IPrinter
                 Console.WriteLine(Environment.NewLine);
             }
         }.Print();
+    }
+
+    private static void PrintObjectsWithDetails(IEnumerable<MilitaryObject> militaryObjects)
+    {
+        var j = 1;
+        foreach (var militaryObject in militaryObjects)
+        {
+            Console.WriteLine($"{j}. Name: {militaryObject.Name}; Time: {militaryObject.Time}; Soldiers count: {militaryObject.SoldiersCount}");
+            j++;
+        }
+    }
+
+    private static void PrintObjectsInOneLine(IEnumerable<MilitaryObject> militaryObjects)
+    {
+        Console.WriteLine(string.Join(' ', militaryObjects.Select(m => m.Name)));
     }
 }
