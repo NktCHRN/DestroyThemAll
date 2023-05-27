@@ -184,7 +184,7 @@ public sealed class ExperimentsPrinter : IPrinter
                         {
                             Question = $"Do you want to change objects count loop parameters? (default: (" +
                                 $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
-                            YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(2)
+                            YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(1)
                         }.Print();
                     }
                 },
@@ -218,7 +218,7 @@ public sealed class ExperimentsPrinter : IPrinter
                         {
                             Question = $"Do you want to change objects count loop parameters? (default: (" +
                                 $"start: {specificRunner.LoopParameters.Start}; step: {specificRunner.LoopParameters.Step}; end: {specificRunner.LoopParameters.End}))",
-                            YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(2)
+                            YAction = () => specificRunner.LoopParameters = PrintingHelperMethods.GetLoopParameters(1)
                         }.Print();
                     }
                 },
