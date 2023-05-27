@@ -29,9 +29,13 @@ public sealed class DynamicSolver : ISolver
                         t[j - 1, k - militaryObjects[j - 1].SoldiersCount][0] + 1,
                         t[j - 1, k - militaryObjects[j - 1].SoldiersCount][1] + militaryObjects[j - 1].Time
                     };
-                    if (t[j - 1, k][0] < newSequence[0])
+                    if (t[j - 1, k][0] <= newSequence[0])
                     {
                         t[j, k] = newSequence;
+                        if (t[j - 1, k][0] == newSequence[0] && t[j - 1, k][1] < newSequence[1])
+                        {
+                            t[j, k] = t[j - 1, k];
+                        }
                     }
                     else
                     {
